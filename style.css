@@ -1,4 +1,73 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+body {
+  background-image: linear-gradient(to right top, lightblue, lightgreen);
+  background-attachment: fixed;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
+  font-size: 2rem;
+}
+.score {
+  font-size: 2rem;
+}
+
+h1 {
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 2rem;
+  color: rgb(5, 8, 38);
+  margin: 20px;
+  }
+  .circles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+  }
+  .circle {
+    width: 100px;
+    height: 100px;
+    background-color: aqua;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:  2rem;
+    pointer-events: none;
+  }
+  .circle.active {
+   background-color: aquamarine;
+   background-image: url(Football_\(soccer_ball\).svg.png);
+   background-size: cover;
+  }
+  .btn {
+    border: none;
+    border-radius: 5px;
+    box-shadow: none;
+    padding: 0.5rem 1rem;
+    margin: 1rem;
+    background-color: rgb(82, 162, 228);
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+.btn:hover, .btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+  footer {
+    background-color: skyblue;
+    font-size: 1rem;
+    text-align: center;
+    justify-content: center;
+    margin-top: 250px;
+    padding: 1rem;
+    height: 3rem;
+  }
+
