@@ -4,8 +4,8 @@ const circles = document.querySelectorAll(".circle");
 const scoreDisplay = document.querySelector(".score");
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close");
-const gameOverMessage = document.querySelector('#gameOverMessage');
-const finalScoreDisplay = document.querySelector('#finalScore');
+const gameOver = document.querySelector('#gameOverMessage');
+const finalScore = document.querySelector('#finalScore');
 const messageForScoreDisplay = document.querySelector('#messageAfterGame');
 
 window.onclick = function (event) {
@@ -65,6 +65,11 @@ const enableEvents = () => {
     circle.style.pointerEvents = "auto";
   });
 };
+const disableEvents = () => {
+  circles.forEach(circle => {
+      circle.style.pointerEvents = "none";
+  });
+}
 
 const startGame = () => {
   if (rounds >= 3) {
@@ -95,7 +100,13 @@ const startGame = () => {
 };
 const endGame = () => {
   //console.log('game ended');
+  gameOn = false;
   modal.style.display = "block";
+  changeButton();
+    disableEvents();
+    clearTimeout(timer);
+    updateModal(score);
+    showModal();
   
   clearTimeout(timer);
 };
@@ -114,6 +125,24 @@ const changeButton = () => {
 const resetGame = () => {
   window.location.reload();
 };
+
+const updateModal = (score) => {
+  scoreDisplay.textContent = score;
+  if (score >= 0 && score <= 50) {
+      messageForScoreDisplay.innerHTML = 'You can do it! </br>  Give it a go again!';
+  } else if (score > 50 && score < 100) {
+      messageForScoreDisplay.innerHTML = 'You are a good player!</br> Try again to be the champion!';
+  } else if (score >= 100) {
+      messageForScoreDisplay.innerHTML = 'You are a champion!</br> Time for some medal!';
+  }
+  gameOver.style.display = 'block';
+  showModal();
+}
+const showModal = () => {
+  modal.classList.add('visible');
+ 
+}
+
 
 startButton.addEventListener("click", startGame);
 endButton.addEventListener("click", endGame);
