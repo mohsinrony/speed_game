@@ -161,3 +161,17 @@ h1 {
     height: 3rem;
   }
 
+  @media (max-width:550px) {
+    .circles {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 2rem;
+    }
+    
+    .modal-content {
+         border-radius: 5px;
+         width: 300px;
+         height: 300px;
+         position: relative;
+     }
+}

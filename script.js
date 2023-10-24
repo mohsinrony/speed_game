@@ -1,9 +1,12 @@
-const stratButton = document.querySelector("#startButton");
+const startButton = document.querySelector("#startButton");
 const endButton = document.querySelector("#endButton");
 const circles = document.querySelectorAll(".circle");
 const scoreDisplay = document.querySelector(".score");
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close");
+const gameOverMessage = document.querySelector('#gameOverMessage');
+const finalScoreDisplay = document.querySelector('#finalScore');
+const messageForScoreDisplay = document.querySelector('#messageAfterGame');
 
 window.onclick = function (event) {
   if (event.target == modal) {
@@ -17,7 +20,7 @@ let timer;
 let pace = 1000;
 let active = 0;
 let rounds = 0;
-
+let gameOn = false;
 // code from W3S page for the random number
 /* function getRndInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -67,6 +70,8 @@ const startGame = () => {
   if (rounds >= 3) {
     return endGame();
   }
+  gameOn = true;
+  changeButton();
   enableEvents();
   const newActive = pickNew(active);
 
@@ -94,14 +99,23 @@ const endGame = () => {
   
   clearTimeout(timer);
 };
-
+// the function changes the start/end button visibility
+const changeButton = () => {
+  if (gameOn) {
+      startButton.style.display = 'none';
+      endButton.style.display = 'block';
+  } else {
+      startButton.style.display = 'block';
+      endButton.style.display = 'none';
+  }
+};
 // close button calls resetGame();
 
 const resetGame = () => {
   window.location.reload();
 };
 
-stratButton.addEventListener("click", startGame);
+startButton.addEventListener("click", startGame);
 endButton.addEventListener("click", endGame);
 closeButton.addEventListener("click", resetGame);
 
