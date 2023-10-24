@@ -6,7 +6,7 @@ const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close");
 const gameOver = document.querySelector('#gameOverMessage');
 const finalScore = document.querySelector('#finalScore');
-const messageForScoreDisplay = document.querySelector('#messageAfterGame');
+const messageAfterGame = document.querySelector('#messageAfterGame');
 
 window.onclick = function (event) {
   if (event.target == modal) {
@@ -25,23 +25,31 @@ let gameOn = false;
 /* function getRndInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 } */
+let kickSound = new Audio ('soccer-kick.mp3');
+kickSound.volume = 0.5;
+let crowdSound = new Audio ('crowd-cheering.mp3');
+crowdSound.volume = 0.5;
+let endSound = new Audio ('game-over-sound.mp3');
+endSound.volume = 0.5;
 
-/*clickPlay = () => {
-    if (clickSound.paused) {
-        clickSound.play();
+clickPlay = () => {
+    if (kickSound.paused) {
+        kickSound.play();
     } else {
-        clickSound.
+        kickSound.currentTime = 0;
     }
-}*/
+}
 const getRndInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 /*console.log(getRndInt(0,3));*/
 
 const clickCircle = (i) => {
+  clickPlay();
   if (i !== active) {
    return endGame();
   }
+  
   rounds--;
   score += 10;
   scoreDisplay.textContent = score;
@@ -76,6 +84,7 @@ const startGame = () => {
     return endGame();
   }
   gameOn = true;
+  crowdSound.play();
   changeButton();
   enableEvents();
   const newActive = pickNew(active);
@@ -110,7 +119,7 @@ const endGame = () => {
   
   clearTimeout(timer);
 };
-// the function changes the start/end button visibility
+// the function changes the start/end button's visibility
 const changeButton = () => {
   if (gameOn) {
       startButton.style.display = 'none';
@@ -127,19 +136,21 @@ const resetGame = () => {
 };
 
 const updateModal = (score) => {
-  scoreDisplay.textContent = score;
+  finalScore.textContent = score;
   if (score >= 0 && score <= 50) {
-      messageForScoreDisplay.innerHTML = 'You can do it! </br>  Give it a go again!';
+      messageAfterGame.innerHTML = 'You can do it! </br>  Give it a go again!';
   } else if (score > 50 && score < 100) {
-      messageForScoreDisplay.innerHTML = 'You are a good player!</br> Try again to be the champion!';
+      messageAfterGame.innerHTML = 'You are a good player!</br> Try again to be the champion!';
   } else if (score >= 100) {
-      messageForScoreDisplay.innerHTML = 'You are a champion!</br> Time for some medal!';
+      messageAfterGame.innerHTML = 'You are a champion!</br> Time for some medal!';
   }
   gameOver.style.display = 'block';
   showModal();
 }
 const showModal = () => {
   modal.classList.add('visible');
+  kickSound.pause();
+  endSound.play();
  
 }
 
