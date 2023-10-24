@@ -18,18 +18,31 @@
     <title>Speed Game</title>
   </head>
   <body>
-    <h1>Quick Tap Challenge</h1>
-    <p>Score <span class="score">0</span></p>
-    <div class="circles">
-      <div class="circle">0</div>
-      <div class="circle">1</div>
-      <div class="circle">2</div>
-      <div class="circle">3</div>
-    </div>
-    <button id="startButton" class="btn">Start Game</button>
+    <main>
+      <h1>Quick Tap Challenge</h1>
+      <p style="color: white">Score <span class="score">0</span></p>
+      <div class="circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <button id="startButton" class="btn">Start Game</button>
 
-    <button id="endButton" class="btn">End Game</button>
+      <button id="endButton" class="btn">End Game</button>
 
+      <div id="endMessage" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div id="gameOverMessage">
+            <h2>Game Over!</h2>
+            <p>You've scored : <span id="finalScore"></span></p>
+            <span id="messageAfterGame"></span>
+          </div>
+          <div class="image"></div>
+        </div>
+      </div>
+    </main>
     <footer>&copy Mohsin Rony 2023</footer>
 
     <script src="script.js"></script>
