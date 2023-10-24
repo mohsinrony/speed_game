@@ -14,6 +14,7 @@ body {
   margin: 20px;
   padding: 20px;
   font-size: 2rem;
+  min-height: 100%;
 }
 
 
@@ -71,7 +72,7 @@ h1 {
     box-shadow: inset 0 0 15px #333;
 }
 .modal {
-  display:none;
+ /* display:none;
   position: fixed;
   z-index: 1;
   top:0;
@@ -81,8 +82,20 @@ h1 {
   overflow: auto;
   background-color: #fbeb7f;
   padding: 1em;
-  max-width: 50ch;
+  max-width: 50ch;*/
+  background-color: #5f5e5edd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    display: none;
 
+}
+.modal.visible {
+  display: flex;
 }
 .modal-content {
   background-color: #fefefe;
@@ -95,7 +108,16 @@ h1 {
   border: 1px solid #888;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
  max-width: 50ch;
+ /*font-family: "Luckiest Guy", sans-serif;
+ background-color: #fff;
+ border-radius: 5px;
+ width: 500px; 
+ height: 300px; 
+ display: flex;
+ justify-content: center;
+ position: relative;*/
 }
+
 .close {
   color: #aaa;
   float: right;
