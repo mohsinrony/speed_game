@@ -3,4 +3,4 @@ Which are to remember:
 - git add .
 - git commit -m "some comment"
 - git push origin main
-I have learned a lot using JavaScript and CSS, while completing this project. 
+- I have learned a lot using JavaScript and CSS, while completing this project. 
