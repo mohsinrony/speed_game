@@ -1,7 +1,6 @@
-NOTE TO MYSELF: NEVER EVER NEVER UPLOAD MANUALLY!
-
-I am going to add updates using command line
-
+I have updated each and every step of creating this game using command line.
+Which are to remember:
 - git add .
 - git commit -m "some comment"
 - git push origin main
+I have learned a lot using JavaScript and CSS, while completing this project. 
