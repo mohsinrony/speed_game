@@ -1,12 +1,17 @@
 const startButton = document.querySelector("#startButton");
 const endButton = document.querySelector("#endButton");
-const circles = document.querySelectorAll(".circle");
+const newGameButton = document.querySelector("#newGameButton");
+const circlesContainer = document.querySelector(".circles");
 const scoreDisplay = document.querySelector(".score");
 const modal = document.querySelector(".modal");
 const closeButton = document.querySelector(".close");
-const gameOver = document.querySelector('#gameOverMessage');
-const finalScore = document.querySelector('#finalScore');
-const messageAfterGame = document.querySelector('#messageAfterGame');
+const gameOver = document.querySelector("#gameOverMessage");
+const finalScore = document.querySelector("#finalScore");
+const messageAfterGame = document.querySelector("#messageAfterGame");
+const playerNameInput = document.querySelector("#playerName");
+const difficultySelect = document.querySelector("#difficulty");
+const timeLimitInput = document.querySelector("#timeLimit");
+const timerDisplay = document.querySelector(".timer");
 
 window.onclick = function (event) {
   if (event.target == modal) {
@@ -21,63 +26,52 @@ let pace = 1000;
 let active = 0;
 let rounds = 0;
 let gameOn = false;
-// code from W3S page for the random number
-/* function getRndInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-} */
-let kickSound = new Audio ('soccer-kick.mp3');
+let playerName = "";
+let difficulty = "easy";
+let timeLimit = 30;
+let countdown;
+
+newGameButton.style.display = "block";
+startButton.style.display = "none";
+endButton.style.display = "none";
+
+const kickSound = new Audio("assets/sounds/soccer-kick.mp3");
 kickSound.volume = 0.5;
-let crowdSound = new Audio ('crowd-cheering.mp3');
+const crowdSound = new Audio("assets/sounds/crowd-cheering.mp3");
 crowdSound.volume = 0.5;
-let endSound = new Audio ('game-over-sound.mp3');
+const endSound = new Audio("assets/sounds/game-over-sound.mp3");
 endSound.volume = 0.5;
 
-clickPlay = () => {
-    if (kickSound.paused) {
-        kickSound.play();
-    } else {
-        kickSound.currentTime = 0;
-    }
-}
+const clickPlay = () => {
+  if (kickSound.paused) {
+    kickSound.play();
+  } else {
+    kickSound.currentTime = 0;
+  }
+};
+
 const getRndInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
-
-/*console.log(getRndInt(0,3));*/
 
 const clickCircle = (i) => {
   clickPlay();
   if (i !== active) {
-   return endGame();
+    return endGame();
   }
-  
   rounds--;
   score += 10;
   scoreDisplay.textContent = score;
 };
 
-circles.forEach((circle, i) => {
-  circle.addEventListener("click", () => clickCircle(i));
-});
-// same functionality as forEach() but for...of instead
-/* for (const [i, item] of circles.entries()) {
-  item.addEventListener('click', () => clickCircle(i))
-} */
-/*const myTimeout = setTimeout()
-function myStopFunction() {
-    clearTimeout(myTimeout)
-}
-*/
-
-const enableEvents = () => {
-  circles.forEach((circle) => {
-    circle.style.pointerEvents = "auto";
-  });
+const generateCircles = (num) => {
+  circlesContainer.innerHTML = "";
+  for (let i = 0; i < num; i++) {
+    const circle = document.createElement("div");
+    circle.classList.add("circle");
+    circle.addEventListener("click", () => clickCircle(i));
+    circlesContainer.appendChild(circle);
+  }
 };
-const disableEvents = () => {
-  circles.forEach(circle => {
-      circle.style.pointerEvents = "none";
-  });
-}
 
 const startGame = () => {
   if (rounds >= 3) {
@@ -87,84 +81,117 @@ const startGame = () => {
   crowdSound.play();
   changeButton();
   enableEvents();
+  countdown = setInterval(updateTimer, 1000);
   const newActive = pickNew(active);
 
-  circles[newActive].classList.toggle("active");
-  circles[active].classList.remove("active");
+  document.querySelectorAll(".circle")[newActive].classList.add("active");
+  document.querySelectorAll(".circle")[active].classList.remove("active");
 
   active = newActive;
-
   timer = setTimeout(startGame, pace);
   pace -= 10;
   rounds++;
-  function pickNew(active) {
-    const newActive = getRndInt(0, 3);
-    if (newActive !== active) {
-      return newActive;
-    }
-
-    return pickNew(active);
-  }
-  /*console.log(active);*/
 };
+
+const pickNew = (active) => {
+  const newActive = getRndInt(
+    0,
+    document.querySelectorAll(".circle").length - 1
+  );
+  if (newActive !== active) {
+    return newActive;
+  }
+  return pickNew(active);
+};
+
 const endGame = () => {
-  //console.log('game ended');
   gameOn = false;
   modal.style.display = "block";
   changeButton();
-    disableEvents();
-    clearTimeout(timer);
-    updateModal(score);
-    showModal();
-  
+  disableEvents();
   clearTimeout(timer);
+  clearInterval(countdown);
+  updateModal();
 };
-// the function changes the start/end button's visibility
-const changeButton = () => {
-  if (gameOn) {
-      startButton.style.display = 'none';
-      endButton.style.display = 'block';
-  } else {
-      startButton.style.display = 'block';
-      endButton.style.display = 'none';
-  }
-};
-// close button calls resetGame();
 
 const resetGame = () => {
   window.location.reload();
 };
 
-const updateModal = (score) => {
+const updateModal = () => {
   finalScore.textContent = score;
-  if (score >= 0 && score <= 50) {
-      messageAfterGame.innerHTML = 'You can do it! </br>  Give it a go again!';
+  if (score <= 50) {
+    messageAfterGame.innerHTML = `${playerName}, you can do it! Give it a go again!`;
   } else if (score > 50 && score < 100) {
-      messageAfterGame.innerHTML = 'You are a good player!</br> Try again to be the champion!';
-  } else if (score >= 100) {
-      messageAfterGame.innerHTML = 'You are a champion!</br> Time for some medal!';
+    messageAfterGame.innerHTML = `${playerName}, you are a good player! Try again to be the champion!`;
+  } else {
+    messageAfterGame.innerHTML = `${playerName}, you are a champion! Time for a medal!`;
   }
-  gameOver.style.display = 'block';
-  showModal();
-}
-const showModal = () => {
-  modal.classList.add('visible');
+  gameOver.style.display = "block";
   kickSound.pause();
   endSound.play();
- 
-}
+};
 
+const changeButton = () => {
+  if (gameOn) {
+    startButton.style.display = "none"; // Hide Start Game button
+    endButton.style.display = "block"; // Show End Game button
+  } else if (score > 0) {
+    startButton.style.display = "block"; // Show Start Game button if game over and score exists
+    endButton.style.display = "none"; // Hide End Game button
+  } else {
+    startButton.style.display = "block"; // Hide Start Game button if no score yet
+    endButton.style.display = "none"; // Hide End Game button when game hasn't started
+  }
+};
 
-startButton.addEventListener("click", startGame);
-endButton.addEventListener("click", endGame);
+const enableEvents = () => {
+  document
+    .querySelectorAll(".circle")
+    .forEach((circle) => (circle.style.pointerEvents = "auto"));
+};
+
+const disableEvents = () => {
+  document
+    .querySelectorAll(".circle")
+    .forEach((circle) => (circle.style.pointerEvents = "none"));
+};
+
+const initializeGame = () => {
+  playerName = playerNameInput.value || "Player";
+  difficulty = difficultySelect.value;
+  timeLimit = parseInt(timeLimitInput.value) || 30;
+  timerDisplay.textContent = timeLimit;
+  const circleCount =
+    difficulty === "easy" ? 3 : difficulty === "medium" ? 4 : 5;
+  generateCircles(circleCount);
+  score = 0;
+  rounds = 0;
+  pace = 1000;
+  scoreDisplay.textContent = score;
+};
+
+const updateTimer = () => {
+  if (timeLimit > 0) {
+    timeLimit--;
+    timerDisplay.textContent = timeLimit;
+  } else {
+    endGame();
+  }
+};
+
+newGameButton.addEventListener("click", () => {
+  initializeGame();
+  newGameButton.style.display = "none"; // Hide New Game button
+  startButton.style.display = "block"; // Show Start Game button
+  changeButton();
+});
+startButton.addEventListener("click", () => {
+  startGame();
+  changeButton(); // Update the button visibility
+});
+endButton.addEventListener("click", () => {
+  endGame();
+  changeButton(); // Update the button visibility
+});
 closeButton.addEventListener("click", resetGame);
-
-/* put modal and use javascript to overlay the modal when the game starts and ends! 
-1. start/end button
-2. modal results
-3. score
-4. conditional message - you are looser, hooray great job!
-5. have some sounds
-
-
-*/

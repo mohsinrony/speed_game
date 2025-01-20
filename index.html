@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,16 +19,42 @@
   </head>
   <body>
     <main>
-      <h1>Quick Tap Challenge</h1>
-      <p style="color: white">Score <span class="score">0</span></p>
+      <h1>Goal Challenge</h1>
+      <h6>Quickly tap on the Football to score a Goal!</h6>
+
+      <div>
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" placeholder="Your name" />
+      </div>
+
+      <div>
+        <label for="difficulty">Select Difficulty:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="timeLimit">Time Limit (seconds):</label>
+        <input type="number" id="timeLimit" value="30" min="10" max="60" />
+      </div>
+
+      <p style="color: white">
+        Score: <span class="score">0</span> | Time Left:
+        <span class="timer">30</span>s
+      </p>
+
       <div class="circles">
         <div class="circle"></div>
         <div class="circle"></div>
         <div class="circle"></div>
         <div class="circle"></div>
       </div>
-      <button id="startButton" class="btn">Start Game</button>
 
+      <button id="newGameButton" class="btn">New Game</button>
+      <button id="startButton" class="btn">Start Game</button>
       <button id="endButton" class="btn hidden">End Game</button>
 
       <div id="endMessage" class="modal">
@@ -36,13 +62,14 @@
           <span class="close">&times;</span>
           <div id="gameOverMessage">
             <h2>Game Over!</h2>
-            <p>You've scored : <span id="finalScore"></span></p>
-            <span id="messageAfterGame"></span>
+            <h4>You've scored: <span id="finalScore"></span></h4>
+            <p id="messageAfterGame"></p>
           </div>
         </div>
       </div>
     </main>
-    <footer>&copy Mohsin Rony 2023</footer>
+
+    <footer>&copy; Mohsin Rony 2023</footer>
 
     <script src="script.js"></script>
   </body>
